@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Marathon Skills 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --header:    #111827;
+    --accent:    #3B82F6;
+    --accent2:   #2563EB;
+    --accent3:   #1D4ED8;
+    --surface:   #242F45;
+    --page-bg:   #1C2333;
+    --border:    #2E3D58;
+    --text1:     #F1F5F9;
+    --text2:     #94A3B8;
+    --text3:     #CBD5E1;
+    --text4:     #64748B;
+    --footer:    #0F172A;
+    --table-hd:  #1E2A3E;
+    --row-hover: #2D3F5C;
+    --red:       #EF4444;
+    --green:     #22C55E;
+    --yellow:    #EAB308;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: var(--page-bg);
+    color: var(--text1);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    overflow: hidden;
+  }
+
+  /* ── App shell ── */
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    max-width: 960px;
+    margin: 0 auto;
+    box-shadow: 0 0 60px rgba(0,0,0,.6);
+  }
+
+  /* ── Header ── */
+  header {
+    flex-shrink: 0;
+    height: 56px;
+    background: var(--header);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 16px;
+  }
+  .logo-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+  }
+  .logo-bar .accent-line {
+    width: 3px; height: 22px;
+    background: var(--accent);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .logo-bar h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    color: var(--text1);
+    white-space: nowrap;
+  }
+  .header-actions { display: flex; align-items: center; gap: 8px; }
+
+  /* ── Buttons ── */
+  .btn {
+    border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 4px;
+    padding: 8px 22px;
+    transition: background .15s, color .15s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; font-weight: 600; }
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-primary:active { background: var(--accent3); }
+  .btn-secondary { background: var(--border); color: var(--text3); }
+  .btn-secondary:hover { background: #3A4F6E; }
+  .btn-nav { background: transparent; color: var(--text2); padding: 6px 14px; font-size: 12px; }
+  .btn-nav:hover { background: #1E2A3E; color: var(--text1); }
+  .btn-sm { padding: 5px 10px; font-size: 11px; }
+
+  /* ── Content area ── */
+  #content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  #content::-webkit-scrollbar { width: 6px; }
+  #content::-webkit-scrollbar-track { background: transparent; }
+  #content::-webkit-scrollbar-thumb { background: #2E3D58; border-radius: 3px; }
+
+  /* ── Footer ── */
+  footer {
+    flex-shrink: 0;
+    height: 36px;
+    background: var(--footer);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  footer span {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text4);
+    letter-spacing: .02em;
+  }
+
+  /* ── Pages ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── PAGE 1: ABOUT ── */
+  .about-wrap { padding: 32px 32px 20px; }
+  .page-title {
+    text-align: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text1);
+    margin-bottom: 24px;
+  }
+
+  .info-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .info-card .card-img {
+    width: 240px;
+    min-width: 240px;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+    flex-shrink: 0;
+    background: #1C2333;
+  }
+  .info-card .card-text {
+    padding: 18px 24px;
+    font-size: 13px;
+    color: var(--text3);
+    line-height: 22px;
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+  .info-card .card-text strong { color: var(--text1); }
+
+  .row { display: flex; flex-direction: row; }
+  .row.reverse { flex-direction: row-reverse; }
+
+  .three-col { display: flex; flex-direction: row; }
+  .three-col .card-img { flex: 1; width: auto; min-width: 0; height: 150px; }
+
+  /* ── PAGE 2: REGISTER ── */
+  .reg-wrap { padding: 24px 48px 20px; }
+  .reg-subtitle { text-align: center; font-size: 12px; color: var(--text4); margin: 4px 0 20px; }
+
+  .form-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 28px;
+  }
+  .form-grid { display: grid; grid-template-columns: 1fr 20px 190px; }
+
+  .field-lbl { font-size: 12px; color: var(--text4); margin-bottom: 4px; margin-top: 0; }
+  .field-wrap { margin-bottom: 12px; }
+
+  input[type=text], input[type=email], input[type=password], input[type=date], select {
+    width: 100%;
+    background: var(--page-bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text1);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 7px 10px;
+    outline: none;
+    transition: border-color .15s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  input:focus, select:focus { border-color: var(--accent); }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2364748B'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+  }
+  select option { background: #1E2A3E; color: var(--text3); }
+
+  .photo-box {
+    height: 120px;
+    background: var(--page-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .photo-box img { width: 100%; height: 100%; object-fit: cover; display: none; }
+  .photo-box .photo-label { color: var(--text4); font-size: 14px; }
+
+  .browse-row { display: flex; gap: 6px; margin-bottom: 12px; }
+  .browse-row input { flex: 1; font-size: 11px; padding: 5px 8px; }
+
+  .error-msg {
+    color: #F87171;
+    font-size: 12px;
+    text-align: center;
+    margin-top: 10px;
+    display: none;
+    line-height: 1.5;
+  }
+  .form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 16px;
+  }
+
+  /* ── PAGE 3: BMI ── */
+  .bmi-wrap { padding: 20px 32px 20px; }
+  .bmi-grid { display: grid; grid-template-columns: 290px 16px 1fr; }
+
+  .bmi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 22px 22px 22px;
+    align-self: start;
+  }
+  .bmi-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px; font-weight: 700;
+    color: var(--text1);
+    margin-bottom: 6px;
+  }
+  .bmi-card .hint {
+    font-size: 12px; color: var(--text4); line-height: 20px; margin-bottom: 18px;
+  }
+
+  .radio-row { display: flex; gap: 20px; margin-bottom: 16px; }
+  .radio-row label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 13px; color: var(--text3); }
+  .radio-row input[type=radio] { accent-color: var(--accent); }
+
+  .unit-row { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .unit-row input { flex: 1; }
+  .unit-lbl { font-size: 13px; color: var(--text4); flex-shrink: 0; }
+
+  .bmi-btns { display: flex; gap: 10px; margin-top: 22px; }
+
+  .result-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 28px 28px 24px;
+    align-self: start;
+    text-align: center;
+  }
+  .silhouette { font-size: 72px; line-height: 1; margin-bottom: 4px; }
+  .bmi-category {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px; font-weight: 700;
+    color: var(--text1);
+    margin-bottom: 4px;
+  }
+  .bmi-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 40px; font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 20px;
+    transition: color .3s;
+  }
+
+  .scale-bar {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    height: 14px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+  .scale-bar div:nth-child(1) { background: var(--accent); }
+  .scale-bar div:nth-child(2) { background: var(--green); }
+  .scale-bar div:nth-child(3) { background: var(--yellow); }
+  .scale-bar div:nth-child(4) { background: var(--red); }
+
+  .marker-row {
+    position: relative;
+    height: 16px;
+    margin-bottom: 2px;
+  }
+  .bmi-marker {
+    position: absolute;
+    top: 0;
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 10px solid var(--text1);
+    transform: translateX(-50%);
+    display: none;
+    transition: left .3s;
+  }
+
+  .scale-labels {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    margin-bottom: 20px;
+  }
+  .scale-labels span { font-size: 10px; text-align: center; }
+  .scale-labels span:nth-child(1) { color: var(--accent); }
+  .scale-labels span:nth-child(2) { color: var(--green); }
+  .scale-labels span:nth-child(3) { color: var(--yellow); }
+  .scale-labels span:nth-child(4) { color: var(--red); }
+
+  .runner-chip {
+    background: var(--page-bg);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text2);
+    text-align: center;
+  }
+
+  /* ── PAGE 4: PARTICIPANTS ── */
+  .part-wrap { padding: 18px 28px 14px; display: flex; flex-direction: column; height: 100%; }
+  .filter-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+  }
+  .filter-bar label { font-size: 12px; color: var(--text4); white-space: nowrap; }
+  .filter-bar select, .filter-bar input { width: auto; }
+  .filter-bar input[type=text] { flex: 1; min-width: 120px; max-width: 200px; font-size: 12px; }
+  .filter-bar select { font-size: 12px; padding: 5px 28px 5px 8px; }
+
+  .count-row { font-size: 13px; color: var(--text4); margin-bottom: 8px; flex-shrink: 0; }
+  .count-row strong { color: var(--text1); }
+
+  .table-wrap {
+    flex: 1;
+    overflow: auto;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead th {
+    background: var(--table-hd);
+    color: var(--text2);
+    font-weight: 600;
+    text-align: left;
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    position: sticky; top: 0; z-index: 1;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody td { padding: 9px 10px; color: var(--text3); }
+  tbody tr:hover td { background: var(--row-hover); color: var(--text1); }
+
+  /* ── Transitions ── */
+  .page { animation: fadein .18s ease; }
+  @keyframes fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* ── Scrollbar global ── */
+  * { scrollbar-width: thin; scrollbar-color: #2E3D58 transparent; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- HEADER (dynamic) -->
+  <header id="main-header">
+    <div class="logo-bar">
+      <div class="accent-line"></div>
+      <h1>MARATHON SKILLS 2026</h1>
+    </div>
+    <div class="header-actions" id="header-actions"></div>
+  </header>
+
+  <!-- CONTENT -->
+  <div id="content">
+
+    <!-- PAGE 1: ABOUT -->
+    <div class="page active" id="page-about">
+      <div class="about-wrap">
+        <p class="page-title">Информация о Marathon Skills 2026</p>
+
+        <!-- Block 1 -->
+        <div class="info-card">
+          <div class="row">
+            <img class="card-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc0ODAnIGhlaWdodD0nMzIwJyB2aWV3Qm94PScwIDAgNDgwIDMyMCc+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9J2cxJyB4MT0nMCcgeTE9JzAnIHgyPScxJyB5Mj0nMSc+CiAgICAgIDxzdG9wIG9mZnNldD0nMCUnIHN0b3AtY29sb3I9JyMxYTNhNmEnLz4KICAgICAgPHN0b3Agb2Zmc2V0PScxMDAlJyBzdG9wLWNvbG9yPScjMGQxZjNjJy8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0nNDgwJyBoZWlnaHQ9JzMyMCcgZmlsbD0ndXJsKCNnMSknLz4KICA8dGV4dCB4PScyNDAnIHk9JzEzMCcgZm9udC1zaXplPSc3MicgdGV4dC1hbmNob3I9J21pZGRsZScgZG9taW5hbnQtYmFzZWxpbmU9J21pZGRsZSc+8J+PgzwvdGV4dD4KICA8dGV4dCB4PScyNDAnIHk9JzIyMCcgZm9udC1zaXplPScyMCcgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0ncmdiYSgyNTUsMjU1LDI1NSwwLjY1KScgZm9udC1mYW1pbHk9J3NhbnMtc2VyaWYnIGZvbnQtd2VpZ2h0PSdib2xkJz5NYXJhdGhvbiA0Mi4xOTUga208L3RleHQ+Cjwvc3ZnPg==" alt="marathon" loading="lazy"/>
+            <div class="card-text">
+              Марафон — это не просто забег на дистанцию <strong>42,195 км.</strong>
+              Это ежегодный ритуал, который объединяет профессиональных атлетов, любителей и тысячи
+              зрителей в едином порыве воли и выносливости.
+            </div>
+          </div>
+        </div>
+
+        <!-- Block 2 -->
+        <div class="info-card">
+          <div class="row reverse">
+            <img class="card-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc0ODAnIGhlaWdodD0nMzIwJyB2aWV3Qm94PScwIDAgNDgwIDMyMCc+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9J2cyJyB4MT0nMCcgeTE9JzAnIHgyPScxJyB5Mj0nMSc+CiAgICAgIDxzdG9wIG9mZnNldD0nMCUnIHN0b3AtY29sb3I9JyMxNDNkMjgnLz4KICAgICAgPHN0b3Agb2Zmc2V0PScxMDAlJyBzdG9wLWNvbG9yPScjMGEyMjE4Jy8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0nNDgwJyBoZWlnaHQ9JzMyMCcgZmlsbD0ndXJsKCNnMiknLz4KICA8dGV4dCB4PScyNDAnIHk9JzEzMCcgZm9udC1zaXplPSc3MicgdGV4dC1hbmNob3I9J21pZGRsZScgZG9taW5hbnQtYmFzZWxpbmU9J21pZGRsZSc+8J+SqjwvdGV4dD4KICA8dGV4dCB4PScyNDAnIHk9JzIyMCcgZm9udC1zaXplPScyMCcgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0ncmdiYSgyNTUsMjU1LDI1NSwwLjY1KScgZm9udC1mYW1pbHk9J3NhbnMtc2VyaWYnIGZvbnQtd2VpZ2h0PSdib2xkJz5UaGUgV2FsbCDigJQga20gMzAtMzU8L3RleHQ+Cjwvc3ZnPg==" alt="runner wall" loading="lazy"/>
+            <div class="card-text">
+              Примерно на <strong>30–35 километре</strong> многие бегуны сталкиваются с явлением,
+              которое называют «стеной». В этот момент запасы гликогена в мышцах истощаются, и организм
+              начинает требовать немедленной остановки. Преодоление этого барьера — вопрос упрямства и силы духа.
+            </div>
+          </div>
+        </div>
+
+        <!-- Block 3 -->
+        <div class="info-card">
+          <div class="three-col">
+            <img class="card-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc0ODAnIGhlaWdodD0nMzIwJyB2aWV3Qm94PScwIDAgNDgwIDMyMCc+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9J2czJyB4MT0nMCcgeTE9JzAnIHgyPScxJyB5Mj0nMSc+CiAgICAgIDxzdG9wIG9mZnNldD0nMCUnIHN0b3AtY29sb3I9JyMyYTFhNGEnLz4KICAgICAgPHN0b3Agb2Zmc2V0PScxMDAlJyBzdG9wLWNvbG9yPScjMTgwZDJjJy8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0nNDgwJyBoZWlnaHQ9JzMyMCcgZmlsbD0ndXJsKCNnMyknLz4KICA8dGV4dCB4PScyNDAnIHk9JzEzMCcgZm9udC1zaXplPSc3MicgdGV4dC1hbmNob3I9J21pZGRsZScgZG9taW5hbnQtYmFzZWxpbmU9J21pZGRsZSc+8J+Pme+4jzwvdGV4dD4KICA8dGV4dCB4PScyNDAnIHk9JzIyMCcgZm9udC1zaXplPScyMCcgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0ncmdiYSgyNTUsMjU1LDI1NSwwLjY1KScgZm9udC1mYW1pbHk9J3NhbnMtc2VyaWYnIGZvbnQtd2VpZ2h0PSdib2xkJz5DaXR5IFN0cmVldHM8L3RleHQ+Cjwvc3ZnPg==" alt="city run" loading="lazy"/>
+            <img class="card-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc0ODAnIGhlaWdodD0nMzIwJyB2aWV3Qm94PScwIDAgNDgwIDMyMCc+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9J2c0JyB4MT0nMCcgeTE9JzAnIHgyPScxJyB5Mj0nMSc+CiAgICAgIDxzdG9wIG9mZnNldD0nMCUnIHN0b3AtY29sb3I9JyMzYTFhMWEnLz4KICAgICAgPHN0b3Agb2Zmc2V0PScxMDAlJyBzdG9wLWNvbG9yPScjMjIwZDBkJy8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0nNDgwJyBoZWlnaHQ9JzMyMCcgZmlsbD0ndXJsKCNnNCknLz4KICA8dGV4dCB4PScyNDAnIHk9JzEzMCcgZm9udC1zaXplPSc3MicgdGV4dC1hbmNob3I9J21pZGRsZScgZG9taW5hbnQtYmFzZWxpbmU9J21pZGRsZSc+8J+OvTwvdGV4dD4KICA8dGV4dCB4PScyNDAnIHk9JzIyMCcgZm9udC1zaXplPScyMCcgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0ncmdiYSgyNTUsMjU1LDI1NSwwLjY1KScgZm9udC1mYW1pbHk9J3NhbnMtc2VyaWYnIGZvbnQtd2VpZ2h0PSdib2xkJz5Dcm93ZCAmIEVuZXJneTwvdGV4dD4KPC9zdmc+" alt="marathon crowd" loading="lazy"/>
+            <div class="card-text" style="flex:1">
+              Раз в году целые мегаполисы перекрывают движение, чтобы отдать улицы бегунам. Для участников
+              это уникальный шанс увидеть город без машин: пробежать по мосту Верразано в Нью-Йорке или
+              мимо Бранденбургских ворот в Берлине.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PAGE 2: REGISTER -->
+    <div class="page" id="page-register">
+      <div class="reg-wrap">
+        <p class="page-title">Регистрация бегуна</p>
+        <p class="reg-subtitle">Заполните все поля для завершения регистрации</p>
+
+        <div class="form-card">
+          <div class="form-grid">
+            <!-- Left -->
+            <div>
+              <div class="field-wrap">
+                <p class="field-lbl">Email</p>
+                <input type="email" id="reg-email" placeholder="user@example.com"/>
+              </div>
+              <div class="field-wrap">
+                <p class="field-lbl">Пароль</p>
+                <input type="password" id="reg-pass"/>
+              </div>
+              <div class="field-wrap">
+                <p class="field-lbl">Повторите пароль</p>
+                <input type="password" id="reg-confirm"/>
+              </div>
+              <div class="field-wrap">
+                <p class="field-lbl">Имя</p>
+                <input type="text" id="reg-first"/>
+              </div>
+              <div class="field-wrap">
+                <p class="field-lbl">Фамилия</p>
+                <input type="text" id="reg-last"/>
+              </div>
+              <div class="field-wrap">
+                <p class="field-lbl">Пол</p>
+                <select id="reg-gender">
+                  <option>Мужской</option>
+                  <option>Женский</option>
+                </select>
+              </div>
+            </div>
+
+            <div></div><!-- spacer -->
+
+            <!-- Right -->
+            <div>
+              <div class="photo-box" id="photo-box">
+                <span class="photo-label">Фото</span>
+                <img id="photo-preview" alt="preview"/>
+              </div>
+
+              <p class="field-lbl">Фото файл</p>
+              <div class="browse-row">
+                <input type="text" id="reg-photo-path" readonly placeholder="Путь к файлу…"/>
+                <button class="btn btn-secondary btn-sm" onclick="browsePhoto()">Обзор</button>
+                <input type="file" id="file-input" accept="image/*" style="display:none" onchange="onPhotoChange(event)"/>
+              </div>
+
+              <div class="field-wrap">
+                <p class="field-lbl">Дата рождения</p>
+                <input type="date" id="reg-birth" value="1990-01-01"/>
+              </div>
+
+              <div class="field-wrap">
+                <p class="field-lbl">Страна</p>
+                <select id="reg-country"></select>
+              </div>
+            </div>
+          </div>
+
+          <p class="error-msg" id="reg-error"></p>
+          <div class="form-actions">
+            <button class="btn btn-primary" onclick="submitRegister()">Зарегистрироваться</button>
+            <button class="btn btn-secondary" onclick="showPage('about')">Отмена</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: BMI -->
+    <div class="page" id="page-bmi">
+      <div class="bmi-wrap">
+        <div class="bmi-grid">
+          <!-- Input card -->
+          <div class="bmi-card">
+            <h2>BMI Калькулятор</h2>
+            <p class="hint">Индекс массы тела (BMI) оценивает соответствие веса и роста. Формула: вес (кг) / рост² (м).</p>
+
+            <p class="field-lbl">Пол</p>
+            <div class="radio-row" style="margin-bottom:16px">
+              <label><input type="radio" name="bmi-gender" id="bmi-male" value="male" checked onchange="updateSilhouette()"/> Мужской</label>
+              <label><input type="radio" name="bmi-gender" id="bmi-female" value="female" onchange="updateSilhouette()"/> Женский</label>
+            </div>
+
+            <p class="field-lbl">Рост</p>
+            <div class="unit-row">
+              <input type="text" id="bmi-height" value="170"/>
+              <span class="unit-lbl">см</span>
+            </div>
+
+            <p class="field-lbl">Вес</p>
+            <div class="unit-row">
+              <input type="text" id="bmi-weight" value="70"/>
+              <span class="unit-lbl">кг</span>
+            </div>
+
+            <div class="bmi-btns">
+              <button class="btn btn-primary" onclick="calcBMI()">Рассчитать</button>
+              <button class="btn btn-secondary" onclick="resetBMI()">Сброс</button>
+            </div>
+          </div>
+
+          <div></div><!-- spacer -->
+
+          <!-- Result card -->
+          <div class="result-card">
+            <div class="silhouette" id="bmi-silhouette">🧍</div>
+            <div class="bmi-category" id="bmi-category">—</div>
+            <div class="bmi-value" id="bmi-value">—</div>
+
+            <div class="scale-bar"><div></div><div></div><div></div><div></div></div>
+            <div class="marker-row"><div class="bmi-marker" id="bmi-marker"></div></div>
+            <div class="scale-labels">
+              <span>Недостаточный</span>
+              <span>Здоровый</span>
+              <span>Избыточный</span>
+              <span>Ожирение</span>
+            </div>
+
+            <div class="runner-chip" id="bmi-runner-name">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 4: PARTICIPANTS -->
+    <div class="page" id="page-participants">
+      <div class="part-wrap" style="height: calc(100vh - 92px);">
+        <p class="page-title" style="margin-bottom:16px">Список зарегистрированных участников</p>
+
+        <div class="filter-bar">
+          <label>Фильтр по ролям:</label>
+          <select id="flt-role" onchange="refreshList()">
+            <option value="">Все роли</option>
+            <option value="Бегун">Бегун</option>
+            <option value="Координатор">Координатор</option>
+          </select>
+
+          <label style="margin-left:8px">Сортировать по:</label>
+          <select id="flt-sort" onchange="refreshList()">
+            <option value="first">Имени</option>
+            <option value="last">Фамилии</option>
+            <option value="email">Email</option>
+            <option value="role">Роли</option>
+          </select>
+
+          <label style="margin-left:8px">Поиск:</label>
+          <input type="text" id="flt-search" oninput="refreshList()" placeholder="Поиск…"/>
+
+          <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="refreshList()">Обновить</button>
+        </div>
+
+        <div class="count-row">Всего участников: <strong id="part-count">0</strong></div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:150px">Имя</th>
+                <th style="width:150px">Фамилия</th>
+                <th style="width:210px">Email</th>
+                <th style="width:130px">Страна</th>
+                <th>Роль</th>
+              </tr>
+            </thead>
+            <tbody id="part-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <footer><span id="footer-timer"></span></footer>
+</div>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────────────────
+const COUNTRIES = [
+  'Kazakhstan','Russia','Germany','France','USA','Spain','Italy',
+  'Japan','China','Brazil','Kenya','Ethiopia','UK','Canada',
+  'Australia','Netherlands','Sweden','Norway','Poland',
+  'Czech Republic','Ukraine','Belarus','Uzbekistan','Kyrgyzstan'
+];
+
+const runners = [
+  { firstName:'Айгерим', lastName:'Сейткали',  email:'aigerim@email.com',  role:'Координатор', country:'Kazakhstan', gender:'Женский',  birthDate:'1992-03-15', bmi:0 },
+  { firstName:'Дмитрий', lastName:'Панов',     email:'dmitry@email.com',   role:'Координатор', country:'Russia',     gender:'Мужской',  birthDate:'1988-07-20', bmi:0 },
+  { firstName:'Clara',   lastName:'Schmidt',   email:'clara@email.com',    role:'Координатор', country:'Germany',    gender:'Женский',  birthDate:'1990-11-05', bmi:0 },
+  { firstName:'David',   lastName:'Lee',       email:'david@email.com',    role:'Бегун',       country:'USA',        gender:'Мужской',  birthDate:'1995-04-10', bmi:0 },
+  { firstName:'Нурлан',  lastName:'Абдуллаев', email:'nurlan@email.com',   role:'Бегун',       country:'Kazakhstan', gender:'Мужской',  birthDate:'1993-08-25', bmi:0 },
+  { firstName:'Felix',   lastName:'Dupont',    email:'felix@email.com',    role:'Бегун',       country:'France',     gender:'Мужской',  birthDate:'1991-12-03', bmi:0 },
+  { firstName:'Мария',   lastName:'Ковалева',  email:'maria@email.com',    role:'Бегун',       country:'Russia',     gender:'Женский',  birthDate:'1994-06-18', bmi:0 },
+];
+
+let currentRunner = null;
+
+// Marathon date: June 15 of current or next year at 09:00
+function getMarathonDate() {
+  const now = new Date();
+  let d = new Date(now.getFullYear(), 5, 15, 9, 0, 0); // month 5 = June
+  if (d <= now) d = new Date(now.getFullYear() + 1, 5, 15, 9, 0, 0);
+  return d;
+}
+
+function getCountdown() {
+  const diff = getMarathonDate() - Date.now();
+  if (diff <= 0) return 'Марафон уже начался!';
+  const s = Math.floor(diff / 1000);
+  const days = Math.floor(s / 86400);
+  const hrs  = Math.floor((s % 86400) / 3600);
+  const mins = Math.floor((s % 3600) / 60);
+  const secs = s % 60;
+  return `${days} дн. ${hrs} ч. ${mins} мин. ${secs} сек. до старта марафона!`;
+}
+
+// ── Timer ─────────────────────────────────────────────────────────────────────
+setInterval(() => {
+  document.getElementById('footer-timer').textContent = getCountdown();
+}, 1000);
+document.getElementById('footer-timer').textContent = getCountdown();
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+let currentPage = 'about';
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  currentPage = name;
+  renderHeader(name);
+  if (name === 'participants') refreshList();
+  if (name === 'register') initRegForm();
+}
+
+function renderHeader(page) {
+  const logoBar = document.querySelector('.logo-bar h1');
+  const actions = document.getElementById('header-actions');
+
+  if (page === 'bmi') {
+    logoBar.textContent = 'BMI CALCULATOR';
+  } else {
+    logoBar.textContent = 'MARATHON SKILLS 2026';
+  }
+
+  // Back button prefix for non-about pages
+  const logoWrap = document.querySelector('.logo-bar');
+  const existing = logoWrap.querySelector('.back-btn');
+  if (existing) existing.remove();
+
+  if (page !== 'about') {
+    const back = document.createElement('button');
+    back.className = 'btn btn-nav back-btn';
+    back.textContent = '← Назад';
+    back.style.marginRight = '16px';
+    back.onclick = () => showPage('about');
+    logoWrap.insertBefore(back, logoWrap.querySelector('.accent-line'));
+  }
+
+  actions.innerHTML = '';
+  if (page === 'about') {
+    actions.innerHTML = `
+      <button class="btn btn-nav" onclick="showPage('participants')">Участники</button>
+      <button class="btn btn-primary" onclick="showPage('register')">Регистрация</button>`;
+  } else if (page === 'bmi') {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-primary';
+    btn.textContent = 'Сохранить';
+    btn.onclick = () => showPage('participants');
+    actions.appendChild(btn);
+  }
+}
+
+// ── Register form ─────────────────────────────────────────────────────────────
+function initRegForm() {
+  const sel = document.getElementById('reg-country');
+  if (!sel.options.length) {
+    COUNTRIES.forEach(c => { const o = new Option(c, c); sel.appendChild(o); });
+    sel.value = 'Kazakhstan';
+  }
+  document.getElementById('reg-error').style.display = 'none';
+}
+
+function browsePhoto() { document.getElementById('file-input').click(); }
+
+function onPhotoChange(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  document.getElementById('reg-photo-path').value = file.name;
+  const url = URL.createObjectURL(file);
+  const img = document.getElementById('photo-preview');
+  img.src = url;
+  img.style.display = 'block';
+  document.querySelector('.photo-label').style.display = 'none';
+}
+
+function showError(msg) {
+  const el = document.getElementById('reg-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function submitRegister() {
+  const email   = document.getElementById('reg-email').value.trim();
+  const pass    = document.getElementById('reg-pass').value;
+  const confirm = document.getElementById('reg-confirm').value;
+  const first   = document.getElementById('reg-first').value.trim();
+  const last    = document.getElementById('reg-last').value.trim();
+  const gender  = document.getElementById('reg-gender').value;
+  const birth   = document.getElementById('reg-birth').value;
+  const country = document.getElementById('reg-country').value;
+  const photo   = document.getElementById('reg-photo-path').value;
+
+  document.getElementById('reg-error').style.display = 'none';
+
+  if (!email)          { showError('Введите Email.'); return; }
+  if (!email.includes('@')) { showError('Некорректный Email.'); return; }
+  if (pass.length < 4) { showError('Пароль должен быть не менее 4 символов.'); return; }
+  if (pass !== confirm) { showError('Пароли не совпадают.'); return; }
+  if (!first)          { showError('Введите имя.'); return; }
+  if (!last)           { showError('Введите фамилию.'); return; }
+
+  const runner = { firstName: first, lastName: last, email, gender, birthDate: birth, country, photoPath: photo, role: 'Бегун', bmi: 0 };
+  currentRunner = runner;
+  runners.push(runner);
+
+  // Pre-fill BMI page with runner's gender
+  if (gender === 'Женский') document.getElementById('bmi-female').checked = true;
+  else document.getElementById('bmi-male').checked = true;
+  document.getElementById('bmi-runner-name').textContent = `${first} ${last}`.trim();
+  resetBMI();
+
+  showPage('bmi');
+}
+
+// ── BMI ───────────────────────────────────────────────────────────────────────
+function updateSilhouette() {
+  const cat = document.getElementById('bmi-category').textContent;
+  const male = document.getElementById('bmi-male').checked;
+  const sil = document.getElementById('bmi-silhouette');
+  // keep current category silhouette if already calculated
+  if (cat === '—' || cat === '') { sil.textContent = '🧍'; return; }
+  setSilhouetteForCategory(cat, male);
+}
+
+function setSilhouetteForCategory(cat, male) {
+  const sil = document.getElementById('bmi-silhouette');
+  if (cat === 'Здоровый')      sil.textContent = male ? '🏃‍♂️' : '🏃‍♀️';
+  else if (cat === 'Избыточный') sil.textContent = male ? '🚶‍♂️' : '🚶‍♀️';
+  else                           sil.textContent = male ? '🧍‍♂️' : '🧍‍♀️';
+}
+
+function resetBMI() {
+  document.getElementById('bmi-height').value = '170';
+  document.getElementById('bmi-weight').value = '70';
+  document.getElementById('bmi-value').textContent = '—';
+  document.getElementById('bmi-value').style.color = 'var(--accent)';
+  document.getElementById('bmi-category').textContent = '—';
+  document.getElementById('bmi-silhouette').textContent = '🧍';
+  document.getElementById('bmi-marker').style.display = 'none';
+}
+
+function calcBMI() {
+  const h = parseFloat(document.getElementById('bmi-height').value.replace(',', '.'));
+  const w = parseFloat(document.getElementById('bmi-weight').value.replace(',', '.'));
+
+  if (!h || h <= 0) { alert('Введите корректный рост.'); return; }
+  if (!w || w <= 0) { alert('Введите корректный вес.'); return; }
+
+  const hm = h / 100;
+  const bmi = Math.round((w / (hm * hm)) * 10) / 10;
+
+  document.getElementById('bmi-value').textContent = bmi.toFixed(1);
+
+  const male = document.getElementById('bmi-male').checked;
+  let cat, color;
+  if      (bmi < 18.5) { cat = 'Недостаточный'; color = '#5B9BD5'; }
+  else if (bmi < 25)   { cat = 'Здоровый';      color = '#6AAF45'; }
+  else if (bmi < 30)   { cat = 'Избыточный';    color = '#E0A800'; }
+  else                 { cat = 'Ожирение';       color = '#C0392B'; }
+
+  document.getElementById('bmi-category').textContent = cat;
+  document.getElementById('bmi-value').style.color = color;
+  setSilhouetteForCategory(cat, male);
+
+  if (currentRunner) currentRunner.bmi = bmi;
+
+  // Marker position
+  const scaleMin = 10, scaleMax = 40;
+  const frac = Math.max(0, Math.min(1, (bmi - scaleMin) / (scaleMax - scaleMin)));
+  const marker = document.getElementById('bmi-marker');
+  const bar = marker.parentElement;
+  const w2 = bar.getBoundingClientRect().width || 400;
+  marker.style.left = (frac * w2) + 'px';
+  marker.style.display = 'block';
+}
+
+// ── Participants ──────────────────────────────────────────────────────────────
+function refreshList() {
+  let list = [...runners];
+
+  const role   = document.getElementById('flt-role').value;
+  const sort   = document.getElementById('flt-sort').value;
+  const search = document.getElementById('flt-search').value.trim().toLowerCase();
+
+  if (role) list = list.filter(r => r.role === role);
+  if (search) list = list.filter(r =>
+    r.firstName.toLowerCase().includes(search) ||
+    r.lastName.toLowerCase().includes(search)  ||
+    r.email.toLowerCase().includes(search)     ||
+    r.country.toLowerCase().includes(search));
+
+  const sortKey = { first:'firstName', last:'lastName', email:'email', role:'role' }[sort] || 'firstName';
+  list.sort((a, b) => a[sortKey].localeCompare(b[sortKey]));
+
+  document.getElementById('part-count').textContent = list.length;
+
+  const tbody = document.getElementById('part-tbody');
+  tbody.innerHTML = list.map(r => `
+    <tr>
+      <td>${esc(r.firstName)}</td>
+      <td>${esc(r.lastName)}</td>
+      <td>${esc(r.email)}</td>
+      <td>${esc(r.country)}</td>
+      <td>${esc(r.role)}</td>
+    </tr>`).join('');
+}
+
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+renderHeader('about');
+</script>
+</body>
+</html>
