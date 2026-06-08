@@ -1,0 +1,36 @@
+.page { padding: 32px 16px 60px; }
+.inner { margin: 0 auto; max-width: 1100px; }
+.topBar { align-items: flex-start; display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; margin-bottom: 28px; }
+.countdownWrap { flex-shrink: 0; }
+
+.filters { align-items: center; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.searchInput { flex: 1; min-width: 200px; }
+.select { width: auto; min-width: 140px; }
+
+.countRow { align-items: center; display: flex; gap: 12px; margin-bottom: 12px; }
+.countBadge {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--muted2);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 12px;
+}
+
+.nameCell { align-items: center; display: flex; gap: 10px; }
+.avatar {
+  align-items: center;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  color: var(--accent);
+  display: flex;
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 700;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+.empty { color: var(--muted2); font-size: 14px; padding: 48px; text-align: center; }
