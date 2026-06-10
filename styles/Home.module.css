@@ -1,0 +1,85 @@
+.page { }
+
+/* Hero */
+.hero {
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 80px 24px 60px;
+}
+.heroBg {
+  background:
+    radial-gradient(ellipse 80% 60% at 60% 40%, rgba(249,115,22,.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 50% at 20% 80%, rgba(59,130,246,.07) 0%, transparent 60%);
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+.heroContent {
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+.eyebrow {
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+}
+.heroTitle {
+  font-family: var(--font-display);
+  font-size: clamp(64px, 10vw, 120px);
+  letter-spacing: .03em;
+  line-height: .95;
+  margin-bottom: 20px;
+}
+.heroAccent { color: var(--accent); }
+.heroSub {
+  color: var(--muted2);
+  font-size: 17px;
+  margin-bottom: 32px;
+  max-width: 480px;
+}
+.heroCtas { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* Countdown */
+.countdownSection {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 36px 24px;
+  background: var(--surface);
+}
+
+/* Cards */
+.cards {
+  max-width: 1200px;
+  margin: 48px auto;
+  padding: 0 24px;
+}
+.cardsGrid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.infoCard { text-align: center; }
+.infoIcon { font-size: 32px; margin-bottom: 10px; }
+.infoTitle {
+  color: var(--muted2);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.infoBody {
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-line;
+}
