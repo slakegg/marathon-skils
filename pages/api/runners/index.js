@@ -1,5 +1,5 @@
-import { requireSession } from '../../lib/auth'
-import { getSupabaseAdmin } from '../../lib/supabase'
+import { requireSession } from '../../../lib/auth'
+import { getSupabaseAdmin } from '../../../lib/supabase'
 
 export default async function handler(req, res) {
   const session = await requireSession(req, res)
