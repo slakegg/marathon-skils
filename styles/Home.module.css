@@ -1,13 +1,13 @@
 .page { }
-
+ 
 /* Hero */
 .hero {
-  min-height: 520px;
+  min-height: calc(100vh - 64px);
   display: flex;
   align-items: center;
   position: relative;
   overflow: hidden;
-  padding: 80px 24px 60px;
+  padding: 60px 24px 48px;
 }
 .heroBg {
   background:
@@ -34,20 +34,45 @@
 }
 .heroTitle {
   font-family: var(--font-display);
-  font-size: clamp(64px, 10vw, 120px);
+  font-size: clamp(48px, 8vw, 110px);
   letter-spacing: .03em;
   line-height: .95;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
 }
 .heroAccent { color: var(--accent); }
-.heroSub {
-  color: var(--muted2);
-  font-size: 17px;
+ 
+/* 3 колонки текста */
+.heroColumns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
   margin-bottom: 32px;
-  max-width: 480px;
 }
-.heroCtas { display: flex; gap: 12px; flex-wrap: wrap; }
-
+.heroColText {
+  color: var(--muted2);
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0;
+}
+ 
+.heroCtas { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+ 
+/* Telegram кнопка */
+.tgBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background: #229ED9;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity .2s;
+}
+.tgBtn:hover { opacity: .85; }
+ 
 /* Countdown */
 .countdownSection {
   border-top: 1px solid var(--border);
@@ -55,7 +80,7 @@
   padding: 36px 24px;
   background: var(--surface);
 }
-
+ 
 /* Cards */
 .cards {
   max-width: 1200px;
@@ -82,4 +107,36 @@
   font-size: 14px;
   line-height: 1.7;
   white-space: pre-line;
+}
+ 
+/* Адаптив — телефон */
+@media (max-width: 768px) {
+  .hero {
+    min-height: auto;
+    padding: 40px 16px 36px;
+  }
+  .heroColumns {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .heroTitle {
+    font-size: clamp(40px, 12vw, 72px);
+  }
+  .heroCtas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .tgBtn {
+    justify-content: center;
+  }
+}
+ 
+/* Адаптив — планшет */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .heroColumns {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .heroColumns .heroColText:last-child {
+    grid-column: 1 / -1;
+  }
 }
