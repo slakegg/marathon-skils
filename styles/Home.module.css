@@ -1,6 +1,6 @@
 .page { }
  
-/* Hero — весь первый экран */
+/* Hero — весь экран */
 .hero {
   height: calc(100vh - 64px);
   display: flex;
@@ -26,18 +26,18 @@
 }
 .eyebrow {
   color: var(--accent);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: .18em;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   text-transform: uppercase;
 }
 .heroTitle {
   font-family: var(--font-display);
-  font-size: clamp(36px, 5.5vw, 72px);
+  font-size: clamp(28px, 4vw, 52px);
   letter-spacing: .03em;
   line-height: .95;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 .heroAccent { color: var(--accent); }
  
@@ -45,85 +45,84 @@
 .textCards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: 10px;
+  margin-bottom: 14px;
 }
 .textCard {
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
+  border-radius: 10px;
+  padding: 12px 14px;
   background: rgba(255,255,255,0.03);
 }
 .textCardIcon {
-  font-size: 22px;
-  margin-bottom: 6px;
+  font-size: 18px;
+  margin-bottom: 4px;
 }
 .textCardTitle {
   color: var(--text);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: .06em;
   text-transform: uppercase;
-  margin: 0 0 6px;
+  margin: 0 0 5px;
 }
 .textCardBody {
   color: var(--muted2);
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: 12px;
+  line-height: 1.5;
   margin: 0;
 }
  
-.heroCtas { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.heroCtas { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
  
 /* Telegram кнопка */
 .tgBtn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: 8px;
   background: #229ED9;
   color: #fff;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   text-decoration: none;
   transition: opacity .2s;
 }
 .tgBtn:hover { opacity: .85; }
  
-/* Countdown */
+/* Countdown — встроен в hero */
 .countdownSection {
   border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 36px 24px;
-  background: var(--surface);
+  padding-top: 12px;
 }
  
-/* Cards */
+/* Cards — 4 инфо-блока под таймером */
 .cards {
   max-width: 1200px;
-  margin: 48px auto;
-  padding: 0 24px;
+  margin: 0 auto;
+  padding: 12px 0 0;
+  border-top: 1px solid var(--border);
 }
 .cardsGrid {
   display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  grid-template-columns: repeat(4, 1fr);
 }
-.infoCard { text-align: center; }
-.infoIcon { font-size: 32px; margin-bottom: 10px; }
+.infoCard { text-align: center; padding: 10px 8px; }
+.infoIcon { font-size: 22px; margin-bottom: 4px; }
 .infoTitle {
   color: var(--muted2);
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 700;
   letter-spacing: .1em;
-  margin-bottom: 6px;
+  margin-bottom: 3px;
   text-transform: uppercase;
 }
 .infoBody {
   color: var(--text);
-  font-size: 14px;
-  line-height: 1.7;
+  font-size: 12px;
+  line-height: 1.5;
   white-space: pre-line;
 }
  
@@ -131,29 +130,11 @@
 @media (max-width: 768px) {
   .hero {
     height: auto;
-    padding: 40px 16px 36px;
+    padding: 32px 16px 24px;
   }
-  .textCards {
-    grid-template-columns: 1fr;
-  }
-  .heroTitle {
-    font-size: clamp(36px, 10vw, 56px);
-  }
-  .heroCtas {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .tgBtn {
-    justify-content: center;
-  }
-}
- 
-/* Адаптив — планшет */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .textCards {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .textCards .textCard:last-child {
-    grid-column: 1 / -1;
-  }
+  .textCards { grid-template-columns: 1fr; }
+  .cardsGrid { grid-template-columns: repeat(2, 1fr); }
+  .heroTitle { font-size: clamp(32px, 10vw, 48px); }
+  .heroCtas { flex-direction: column; align-items: stretch; }
+  .tgBtn { justify-content: center; }
 }
