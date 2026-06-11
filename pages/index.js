@@ -16,24 +16,35 @@ export default function Home() {
             МАРАФОН<br /><span className={styles.heroAccent}>КАЗАХСТАН</span>
           </h1>
  
-          {/* Текст в 3 колонки */}
-          <div className={`${styles.heroColumns} fade-up-delay-2`}>
-            <p className={styles.heroColText}>
-              Марафон — это не просто забег на дистанцию 42,195 км. Это ежегодный ритуал,
-              который объединяет профессиональных атлетов, любителей и тысячи зрителей
-              в едином порыве воли и выносливости.
-            </p>
-            <p className={styles.heroColText}>
-              Примерно на 30–35 километре многие бегуны сталкиваются с явлением,
-              которое называют «стеной». В этот момент запасы гликогена в мышцах
-              истощаются, и организм начинает требовать немедленной остановки.
-              Преодоление этого барьера — вопрос чистого упрямства и силы духа.
-            </p>
-            <p className={styles.heroColText}>
-              Раз в году целые мегаполисы перекрывают движение, чтобы отдать улицы
-              бегунам. Пробеги по мосту Верразано в Нью-Йорке или мимо Бранденбургских
-              ворот в Берлине под крики тысяч болельщиков.
-            </p>
+          {/* 3 карточки с текстом */}
+          <div className={`${styles.textCards} fade-up-delay-2`}>
+            <div className={styles.textCard}>
+              <div className={styles.textCardIcon}>🏃</div>
+              <h3 className={styles.textCardTitle}>О марафоне</h3>
+              <p className={styles.textCardBody}>
+                Марафон — это не просто забег на дистанцию 42,195 км. Это ежегодный ритуал,
+                который объединяет профессиональных атлетов, любителей и тысячи зрителей
+                в едином порыве воли и выносливости.
+              </p>
+            </div>
+            <div className={styles.textCard}>
+              <div className={styles.textCardIcon}>💪</div>
+              <h3 className={styles.textCardTitle}>Испытание духа</h3>
+              <p className={styles.textCardBody}>
+                На 30–35 километре многие бегуны сталкиваются со «стеной». Запасы гликогена
+                истощаются, организм требует остановки. Преодоление этого барьера —
+                вопрос чистого упрямства и силы духа.
+              </p>
+            </div>
+            <div className={styles.textCard}>
+              <div className={styles.textCardIcon}>🌍</div>
+              <h3 className={styles.textCardTitle}>Город бегунам</h3>
+              <p className={styles.textCardBody}>
+                Раз в году целые мегаполисы перекрывают движение, отдавая улицы бегунам.
+                Пробеги по мосту Верразано в Нью-Йорке или мимо Бранденбургских ворот
+                в Берлине под крики тысяч болельщиков.
+              </p>
+            </div>
           </div>
  
           <div className={`${styles.heroCtas} fade-up-delay-3`}>
