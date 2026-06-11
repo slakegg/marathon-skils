@@ -7,91 +7,79 @@ export default function Home() {
   const { data: session } = useSession()
   return (
     <div className={styles.page}>
-      {/* Hero */}
       <section className={styles.hero}>
         <div className={styles.heroBg} aria-hidden />
         <div className={styles.heroContent}>
-          <div className={`${styles.eyebrow} fade-up`}>АСТАНА · 15 ИЮНЯ 2025</div>
-          <h1 className={`${styles.heroTitle} fade-up-delay-1`}>
+ 
+          <div className={styles.eyebrow}>АСТАНА · 15 ИЮНЯ 2025</div>
+          <h1 className={styles.heroTitle}>
             МАРАФОН<br /><span className={styles.heroAccent}>КАЗАХСТАН</span>
           </h1>
  
-          {/* 3 карточки с текстом */}
-          <div className={`${styles.textCards} fade-up-delay-2`}>
+          {/* 3 карточки */}
+          <div className={styles.textCards}>
             <div className={styles.textCard}>
               <div className={styles.textCardIcon}>🏃</div>
               <h3 className={styles.textCardTitle}>О марафоне</h3>
               <p className={styles.textCardBody}>
-                Марафон — это не просто забег на дистанцию 42,195 км. Это ежегодный ритуал,
-                который объединяет профессиональных атлетов, любителей и тысячи зрителей
-                в едином порыве воли и выносливости.
+                Марафон — ежегодный ритуал на 42,195 км, объединяющий профессионалов,
+                любителей и тысячи зрителей в едином порыве воли и выносливости.
               </p>
             </div>
             <div className={styles.textCard}>
               <div className={styles.textCardIcon}>💪</div>
               <h3 className={styles.textCardTitle}>Испытание духа</h3>
               <p className={styles.textCardBody}>
-                На 30–35 километре многие бегуны сталкиваются со «стеной». Запасы гликогена
-                истощаются, организм требует остановки. Преодоление этого барьера —
-                вопрос чистого упрямства и силы духа.
+                На 30–35 км бегуны встречают «стену». Преодоление — вопрос чистого
+                упрямства и силы духа, а не физической подготовки.
               </p>
             </div>
             <div className={styles.textCard}>
               <div className={styles.textCardIcon}>🌍</div>
               <h3 className={styles.textCardTitle}>Город бегунам</h3>
               <p className={styles.textCardBody}>
-                Раз в году целые мегаполисы перекрывают движение, отдавая улицы бегунам.
-                Пробеги по мосту Верразано в Нью-Йорке или мимо Бранденбургских ворот
-                в Берлине под крики тысяч болельщиков.
+                Мегаполисы перекрывают движение ради бегунов. Пробеги по мосту
+                Верразано или мимо Бранденбургских ворот под крики болельщиков.
               </p>
             </div>
           </div>
  
-          <div className={`${styles.heroCtas} fade-up-delay-3`}>
+          {/* Кнопки */}
+          <div className={styles.heroCtas}>
             {session ? (
-              <Link href="/register" className="btn btn-primary">
-                Зарегистрироваться →
-              </Link>
+              <Link href="/register" className="btn btn-primary">Зарегистрироваться →</Link>
             ) : (
-              <Link href="/login" className="btn btn-primary">
-                Войти и зарегистрироваться →
-              </Link>
+              <Link href="/login" className="btn btn-primary">Войти и зарегистрироваться →</Link>
             )}
-            <Link href="/participants" className="btn btn-secondary">
-              Список участников
-            </Link>
-            <a
-              href="https://t.me/bestvoiceRustbek"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.tgBtn}
-            >
+            <Link href="/participants" className="btn btn-secondary">Список участников</Link>
+            <a href="https://t.me/bestvoiceRustbek" target="_blank" rel="noopener noreferrer" className={styles.tgBtn}>
               ✈️ Telegram-бот
             </a>
           </div>
-        </div>
-      </section>
  
-      {/* Countdown */}
-      <section className={styles.countdownSection}>
-        <Countdown />
-      </section>
+          {/* Таймер */}
+          <div className={styles.countdownSection}>
+            <Countdown />
+          </div>
  
-      {/* Info cards */}
-      <section className={styles.cards}>
-        <div className={styles.cardsGrid}>
-          {[
-            { icon: '📍', title: 'Место',     body: 'Астана, Казахстан\nЦентральный парк' },
-            { icon: '📅', title: 'Дата',      body: '15 июня 2025\nСтарт в 09:00' },
-            { icon: '🏅', title: 'Дистанция', body: '42.195 км\nПолный марафон' },
-            { icon: '🌍', title: 'Страны',    body: 'Участники из\n24+ стран' },
-          ].map(({ icon, title, body }) => (
-            <div key={title} className={`card ${styles.infoCard}`}>
-              <div className={styles.infoIcon}>{icon}</div>
-              <div className={styles.infoTitle}>{title}</div>
-              <div className={styles.infoBody}>{body}</div>
+          {/* Инфо-карточки */}
+          <div className={styles.cards}>
+            <div className={styles.cardsGrid}>
+              {[
+                { icon: '📍', title: 'Место',     body: 'Астана, Казахстан\nЦентральный парк' },
+                { icon: '📅', title: 'Дата',      body: '15 июня 2025\nСтарт в 09:00' },
+                { icon: '🏅', title: 'Дистанция', body: '42.195 км\nПолный марафон' },
+                { icon: '🌍', title: 'Страны',    body: 'Участники из\n24+ стран' },
+              ].map(({ icon, title, body }) => (
+                <div key={title} className={`card ${styles.infoCard}`}>
+                  <div className={styles.infoIcon}>{icon}</div>
+                  <div className={styles.infoTitle}>{title}</div>
+                  <div className={styles.infoBody}>{body}</div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+ 
         </div>
       </section>
     </div>
