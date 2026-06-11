@@ -37,20 +37,39 @@
   font-size: clamp(48px, 8vw, 110px);
   letter-spacing: .03em;
   line-height: .95;
-  margin-bottom: 28px;
+  margin-bottom: 32px;
 }
 .heroAccent { color: var(--accent); }
  
-/* 3 колонки текста */
-.heroColumns {
+/* 3 текстовые карточки */
+.textCards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-bottom: 32px;
+  gap: 16px;
+  margin-bottom: 36px;
 }
-.heroColText {
+.textCard {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 20px;
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(4px);
+}
+.textCardIcon {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+.textCardTitle {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin: 0 0 10px;
+}
+.textCardBody {
   color: var(--muted2);
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.7;
   margin: 0;
 }
@@ -115,9 +134,8 @@
     min-height: auto;
     padding: 40px 16px 36px;
   }
-  .heroColumns {
+  .textCards {
     grid-template-columns: 1fr;
-    gap: 16px;
   }
   .heroTitle {
     font-size: clamp(40px, 12vw, 72px);
@@ -133,10 +151,10 @@
  
 /* Адаптив — планшет */
 @media (min-width: 769px) and (max-width: 1024px) {
-  .heroColumns {
+  .textCards {
     grid-template-columns: repeat(2, 1fr);
   }
-  .heroColumns .heroColText:last-child {
+  .textCards .textCard:last-child {
     grid-column: 1 / -1;
   }
 }
