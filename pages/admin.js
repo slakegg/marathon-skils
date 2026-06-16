@@ -2,7 +2,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import styles from '../styles/Admin.module.css'
-
+ 
 export default function AdminPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -16,7 +16,7 @@ export default function AdminPage() {
   const [editForm, setEditForm] = useState({})
   const [editError, setEditError] = useState('')
   const [editLoading, setEditLoading] = useState(false)
-
+ 
   useEffect(() => {
     if (status === 'unauthenticated') { router.replace('/login'); return }
     if (!session) return
@@ -27,11 +27,11 @@ export default function AdminPage() {
         if (!d.isAdmin) router.replace('/')
       })
   }, [session, status])
-
+ 
   useEffect(() => {
     if (isAdmin) loadRunners()
   }, [isAdmin])
-
+ 
   async function loadRunners() {
     setLoading(true)
     const res = await fetch('/api/runners')
@@ -39,7 +39,86 @@ export default function AdminPage() {
     setRunners(Array.isArray(d) ? d : [])
     setLoading(false)
   }
-
+ 
+  // ── Экспорт в CSV ──────────────────────────────────────────────────────────
+  function exportCSV() {
+    const headers = ['Имя', 'Фамилия', 'Email', 'Страна', 'Пол', 'Дата рождения', 'Роль', 'ИМТ']
+    const rows = runners.map(r => [
+      r.first_name, r.last_name, r.email, r.country,
+      r.gender, r.birth_date, r.role, r.bmi || ''
+    ])
+    const csv = [headers, ...rows]
+      .map(row => row.map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(','))
+      .join('\n')
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `marathon_${new Date().toISOString().split('T')[0]}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+ 
+  // ── Импорт из CSV ──────────────────────────────────────────────────────────
+  function importCSV(e) {
+    const file = e.target.files[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = async (evt) => {
+      const text = evt.target.result.replace(/^\uFEFF/, '')
+      const lines = text.trim().split('\n')
+      const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim().toLowerCase())
+ 
+      const map = {
+        first_name: ['имя', 'first_name', 'name'],
+        last_name:  ['фамилия', 'last_name', 'surname'],
+        email:      ['email', 'почта'],
+        country:    ['страна', 'country'],
+        gender:     ['пол', 'gender'],
+        birth_date: ['дата рождения', 'birth_date', 'birthdate'],
+        role:       ['роль', 'role'],
+        bmi:        ['имт', 'bmi'],
+      }
+ 
+      const getIdx = field => headers.findIndex(h => map[field]?.includes(h))
+ 
+      const toImport = lines.slice(1).map(line => {
+        const cols = line.split(',').map(c => c.replace(/^"|"$/g, '').trim())
+        return {
+          first_name: cols[getIdx('first_name')] || '',
+          last_name:  cols[getIdx('last_name')]  || '',
+          email:      cols[getIdx('email')]       || '',
+          country:    cols[getIdx('country')]     || 'Kazakhstan',
+          gender:     cols[getIdx('gender')]      || 'Мужской',
+          birth_date: cols[getIdx('birth_date')]  || '1990-01-01',
+          role:       cols[getIdx('role')]        || 'Бегун',
+          bmi:        parseFloat(cols[getIdx('bmi')]) || 0,
+        }
+      }).filter(r => r.first_name && r.email)
+ 
+      if (toImport.length === 0) {
+        alert('Не найдено валидных строк.\nПроверь заголовки: Имя, Фамилия, Email обязательны.')
+        return
+      }
+ 
+      const res = await fetch('/api/admin/export-import', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ runners: toImport }),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        alert(`✅ Импортировано: ${data.inserted} участников`)
+        loadRunners()
+      } else {
+        alert(`❌ Ошибка: ${data.error}`)
+      }
+    }
+    reader.readAsText(file, 'UTF-8')
+    e.target.value = ''
+  }
+ 
+  // ── Фильтрация и сортировка ────────────────────────────────────────────────
   const filtered = runners
     .filter(r => roleFilter === 'Все роли' || r.role === roleFilter)
     .filter(r => {
@@ -52,7 +131,7 @@ export default function AdminPage() {
       if (sort === 'Роли')    return (a.role||'').localeCompare(b.role||'')
       return (a.first_name||'').localeCompare(b.first_name||'')
     })
-
+ 
   function openEdit(runner) {
     setEditRunner(runner)
     setEditForm({
@@ -62,7 +141,7 @@ export default function AdminPage() {
     })
     setEditError('')
   }
-
+ 
   async function saveEdit() {
     if (!editForm.first_name.trim()) { setEditError('Введите имя'); return }
     if (editForm.first_name.length > 50) { setEditError('Имя — не более 50 символов'); return }
@@ -83,16 +162,16 @@ export default function AdminPage() {
       setEditLoading(false)
     }
   }
-
+ 
   async function deleteRunner(id) {
     if (!confirm('Удалить участника?')) return
     await fetch(`/api/runners/${id}`, { method: 'DELETE' })
     loadRunners()
   }
-
+ 
   if (status === 'loading' || isAdmin === null) return null
   if (!isAdmin) return null
-
+ 
   return (
     <div className={styles.page}>
       <div className={styles.inner}>
@@ -102,12 +181,26 @@ export default function AdminPage() {
             <p className="page-subtitle">Управление участниками марафона</p>
           </div>
           <div className={styles.topActions}>
+            {/* Экспорт */}
+            <button className="btn btn-secondary" onClick={exportCSV} title="Скачать всех участников в CSV">
+              ⬇️ Экспорт CSV
+            </button>
+            {/* Импорт */}
+            <label className="btn btn-secondary" style={{ cursor: 'pointer' }} title="Загрузить участников из CSV">
+              ⬆️ Импорт CSV
+              <input
+                type="file"
+                accept=".csv"
+                style={{ display: 'none' }}
+                onChange={importCSV}
+              />
+            </label>
             <button className="btn btn-primary" onClick={() => openEdit({ id: 'new', first_name: '', last_name: '', role: 'Бегун', email: '' })}>
               + Добавить участника
             </button>
           </div>
         </div>
-
+ 
         <div className={styles.filters}>
           <input
             className={styles.searchInput}
@@ -129,11 +222,11 @@ export default function AdminPage() {
           </select>
           <button className="btn btn-secondary" onClick={loadRunners}>↺ Обновить</button>
         </div>
-
+ 
         <div className={styles.countRow}>
           <span className={styles.countBadge}>{filtered.length} участников</span>
         </div>
-
+ 
         {loading ? (
           <div className={styles.empty}>Загрузка...</div>
         ) : (
@@ -181,17 +274,16 @@ export default function AdminPage() {
           </div>
         )}
       </div>
-
-      {/* Edit modal */}
+ 
       {editRunner && (
         <div className={styles.modalOverlay} onClick={e => { if (e.target === e.currentTarget) setEditRunner(null) }}>
           <div className={`card ${styles.modal} fade-up`}>
             <h2 className={styles.modalTitle}>
               {editRunner.id === 'new' ? 'Новый участник' : `Редактировать: ${editRunner.email || 'участник'}`}
             </h2>
-
+ 
             {editError && <div className="error-msg" style={{ marginBottom: 14 }}>{editError}</div>}
-
+ 
             <div>
               <label>Имя *</label>
               <input value={editForm.first_name}
@@ -216,7 +308,7 @@ export default function AdminPage() {
                 <option>Администратор</option>
               </select>
             </div>
-
+ 
             <div className={styles.modalActions}>
               <button className="btn btn-secondary" onClick={() => setEditRunner(null)}>Отмена</button>
               <button className="btn btn-primary" onClick={saveEdit} disabled={editLoading}>
